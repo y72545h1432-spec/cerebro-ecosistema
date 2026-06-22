@@ -1,7 +1,7 @@
 # Cómo estructurar un proyecto en el ecosistema
 
 Guía para añadir un proyecto propio al ecosistema multi-agente. Lo del ecosistema (coordinación,
-memoria, checkpoint, equipo) ya viene hecho; esto es solo **lo personal de cada proyecto**. Para
+memoria, checkpoint) ya viene hecho; esto es solo **lo personal de cada proyecto**. Para
 integrar un *agente/runtime* nuevo (no un proyecto), ver `06_CONTRATO_NUEVO_AGENTE.md`.
 
 > Atajo: `py cerebro_init.py` detecta tus carpetas de proyecto y propone registrarlas;

@@ -12,9 +12,7 @@
 
 ## ✅ Lo que YA viene configurado (no toques, es público y portable)
 - **Código y tests**: `cerebro_*.py` + `test_cerebro_*.py` (stdlib pura).
-- **CLI único**: `py cerebro.py <area> [args]` (tareas/modelo/coord/salud/watch/checkpoint/hechos/memoria/coprog/grafo/skills/equipo).
-- **Agent Team** con modo **GRATIS $0** por defecto (routing híbrido) — ver `23_EQUIPO_SUPERVISOR.md`.
-- **Defaults de calidad** (`cerebro_equipo.toml [calidad]`): híbrido (debate/haiku→gratis, sonnet/opus→Claude) + verificador.
+- **CLI único**: `py cerebro.py <area> [args]` (tareas/modelo/coord/salud/watch/checkpoint/hechos/memoria/coprog/grafo/skills).
 - **Plantillas**: `.env.example`, `.gitignore` (ya protege secretos y memoria).
 - **Convenciones de trabajo**: `CONVENCIONES.md` (reglas generales + calidad + hábitos + auto-mejora de skills R16).
 - **Skills propias** (genericizadas) en `skills/` — se disparan por su `description`; índice en `CONVENCIONES.md`.
@@ -51,9 +49,6 @@
 - [ ] Suite completa en verde:
   - bash: `for t in test_cerebro_*.py; do py "$t"; done`
   - PowerShell: `Get-ChildItem test_cerebro_*.py | ForEach-Object { py $_.Name }`
-- [ ] Panel del equipo:  `py cerebro.py equipo dash --once`
-- [ ] Plan sin gasto:  `py cerebro.py equipo drenar --tier haiku --dry-run`  (debe mostrar runtime `api` y tus proveedores)
-- [ ] (cuando quieras gastar $0 real)  `py cerebro.py equipo drenar --tier haiku --modo gratis --confirm`
 
 ---
 

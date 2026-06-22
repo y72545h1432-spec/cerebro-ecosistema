@@ -10,7 +10,7 @@ Entrada neutral para entender el cerebro compartido de `~`.
 > `cerebro_coprog.py` (locks por archivo), `cerebro_tareas_modelo.py` (cola de tareas por modelo),
 > `cerebro_grafo.py` (grafo de código on-demand: `simbolo <X> <ruta>` = def/quién-llama · `arquitectura <ruta>` = mapa de repo grande).
 > **Salud de coordinación:** `cerebro_salud.py` (read-only) — panel de lo que estaba invisible: locks tomados (marca GLOBAL/STALE), dead-letters vencidos y conflictos de hechos. `--json` para el hub.
-> **CLI único:** `py cerebro.py <area> [args]` despacha a TODOS los módulos (tareas/modelo/coord/salud/watch/checkpoint/hechos/memoria/coprog/grafo/skills/**equipo**); base común en `cerebro_core.py`. **Agent Team:** `cerebro_equipo.py` (supervisor de workers efímeros) — ver `23_EQUIPO_SUPERVISOR.md`.
+> **CLI único:** `py cerebro.py <area> [args]` despacha a TODOS los módulos (tareas/modelo/coord/salud/watch/checkpoint/hechos/memoria/coprog/grafo/skills); base común en `cerebro_core.py`.
 
 ## Mapa de documentos (abre SOLO el que aplique — no leerlos todos)
 1. `ECOSISTEMA_MULTIAGENTE.md` — identidad, principios y politica de documentos.
@@ -37,7 +37,6 @@ Entrada neutral para entender el cerebro compartido de `~`.
 22. `20_RED_ROLES_IA.md` — red de roles por IA/modelo: `buscador` (Gemini/OpenAI/Perplexity), arquitecto, implementador, mecanico, verificador y enlace con el router por modelo.
 23. 21_PROTOCOLO_COMPROBACION_CALIDAD.md — auditoria integral del ecosistema y proyectos para detectar fallos, riesgos y mejoras con evidencia.
 24. `22_OPENCLAW_VIGILANTE.md` — OpenClaw como vigilante read-only always-on (observa git+salud+tareas y avisa por Telegram; modelo local; NO coordina ni modifica). _(Excepción aprobada a la Regla #3.)_
-25. `23_EQUIPO_SUPERVISOR.md` — **Agent Team**: supervisor que auto-lanza workers efímeros (drena la cola y termina, con guardrails), debate por olas y dashboard. Corre **GRATIS $0** (modelos libres Groq/Gemini/OpenRouter vía `cerebro_llm.py`, con fallback), con **Claude** (pago) o **híbrido** (default). Incluye la base común `cerebro_core.py` y el **CLI único `cerebro.py`**. _(Reencuadre acotado de la Regla #3.)_
 
 ## Adaptadores
 | Runtime | Adaptador raiz | Uso |

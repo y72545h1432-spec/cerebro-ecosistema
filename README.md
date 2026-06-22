@@ -63,35 +63,16 @@ Todo se despacha por un solo comando: `py cerebro.py <área> [args]`
 | `hechos` | hechos verificables (prueba comandos y guarda evidencia anti-discrepancia) |
 | `grafo` | grafo de código on-demand (`simbolo` / `arquitectura`, vía `ast`, sin daemon) |
 | `coprog` | co-programación: ownership y locks por archivo |
-| `equipo` | **Agent Team**: supervisor de workers efímeros (drena la cola y termina) |
 
 ---
 
-## 4. Agent Team (modo GRATIS $0)
-
-Supervisor que **drena una cola lanzando workers efímeros y termina** (no es un daemon), con guardrails,
-recuperación, debate por olas y dashboard. Corre a **$0** con proveedores gratuitos (Groq/Gemini/
-OpenRouter, con fallback automático), con **Claude** (de pago, máxima calidad) o **híbrido** (lo barato
-gratis, lo difícil a Claude — default).
-
-```bash
-py cerebro.py equipo drenar --tier haiku --dry-run                  # ver el plan (no gasta, no lanza)
-py cerebro.py equipo drenar --tier haiku --modo gratis --confirm    # ejecutar a $0
-py cerebro.py equipo dash --once                                    # panel read-only
-```
-
-Detalle y tabla gratis/pago/híbrido: **[`23_EQUIPO_SUPERVISOR.md`](23_EQUIPO_SUPERVISOR.md)** · cliente
-multi-proveedor: `cerebro_llm.py`.
-
----
-
-## 5. Reglas universales (guardarraíles)
+## 4. Reglas universales (guardarraíles)
 
 Aplican a **todo** proyecto. Las clave (lista completa en el `CLAUDE.md` de cada proyecto):
 
 1. **Confirmar antes de lo irreversible / externo / que gasta dinero.** La autorización en un contexto no se extiende al siguiente.
 2. **Verificar en vivo con evidencia** antes de reportar algo como hecho (ver `cerebro_hechos.py`, regla #15).
-3. **Nada de daemons/loops autónomos** sin decisión explícita (excepción acotada: el supervisor del Agent Team, que termina).
+3. **Nada de daemons/loops autónomos** sin decisión explícita del usuario.
 4. **Acciones GUI** solo con foco verificado + usuario mirando + confirmación (`gui-control-seguro`).
 5. **Paso 0 multisesión** antes de tocar archivos de un proyecto con posibles sesiones concurrentes.
 6. **Revisar skills antes de implementar** algo de un tipo nuevo (lanza subagentes que busquen skills aplicables).
@@ -104,7 +85,7 @@ especulativo) · cambios quirúrgicos · ejecución por metas verificables.**
 
 ---
 
-## 6. Procesos (abre solo el que aplique)
+## 5. Procesos (abre solo el que aplique)
 
 Documentos numerados, cada uno dueño de una rutina. No leerlos todos — el índice [`12_HUB_PROCESOS.md`](12_HUB_PROCESOS.md)
 te manda al correcto. Los más usados:
@@ -120,7 +101,7 @@ te manda al correcto. Los más usados:
 
 ---
 
-## 7. Skills
+## 6. Skills
 
 Capacidades reutilizables que se disparan por su `description`. Mapa "qué invocar y cuándo":
 [`SKILLS_CROSS_PROYECTO.md`](SKILLS_CROSS_PROYECTO.md) · convenciones y auto-mejora (R16):
@@ -138,7 +119,7 @@ revisión, verificación).
 
 ---
 
-## 8. Arquitectura y robustez
+## 7. Arquitectura y robustez
 
 - **Base común** `cerebro_core.py` (stdlib): escritura atómica con respaldo `.bak`, JSONL append-only,
   `pid_alive`, mutex de proceso por **lock del SO** (sin TTL/race). Fuente única de esas utilidades.
@@ -153,7 +134,7 @@ revisión, verificación).
 
 ---
 
-## 9. Privacidad — qué NO se sube
+## 8. Privacidad — qué NO se sube
 
 Este repo es la copia **pública y genérica**. **Cero datos personales** (gate verificado = 0). Quedan
 fuera por diseño (`.gitignore` + el sincronizador): `memoria/`, estado/locks/buzón, `.env` y secretos,
@@ -162,12 +143,12 @@ de proyectos. Si añades algo sensible, agrégalo al `.gitignore`. Lo personal v
 
 ---
 
-## 10. Tests
+## 9. Tests
 
 Stdlib puro, sin pytest. Cada módulo trae su `test_cerebro_*.py` (runner propio que imprime `N/N verde`):
 
 ```bash
-for t in test_cerebro_*.py; do py "$t"; done      # 17 suites verdes
+for t in test_cerebro_*.py; do py "$t"; done      # todas las suites en verde
 ```
 
 ---

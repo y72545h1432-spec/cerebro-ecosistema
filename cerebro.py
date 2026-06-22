@@ -12,7 +12,7 @@ Uso:
     py cerebro.py tareas pendientes haiku
     py cerebro.py coord                # estado de la multisesion
     py cerebro.py salud --json
-    py cerebro.py equipo drenar --tier haiku --confirm    # (Fase 2-3)
+    py cerebro.py memoria buscar "<texto>"                 # recall por significado
 """
 from __future__ import annotations
 import os
@@ -33,7 +33,6 @@ AREAS = {
     "memoria":    ("cerebro_memoria.py",       "memoria durable (recordar/leer/buscar/indice/reindexar)"),
     "coprog":     ("cerebro_coprog.py",        "co-programacion: tablero de locks de archivo (board/check)"),
     "grafo":      ("cerebro_grafo.py",         "grafo de codigo on-demand (simbolo/arquitectura)"),
-    "equipo":     ("cerebro_equipo.py",        "supervisor del Agent Team (drenar/debate/reanudar/dash)"),
 }
 
 # sub-areas de 'skills' -> modulo. `py cerebro.py skills <sub> [args]`.

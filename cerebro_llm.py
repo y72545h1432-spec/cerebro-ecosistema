@@ -1,6 +1,6 @@
 """cerebro_llm.py — cliente LLM OpenAI-compatible MULTI-PROVEEDOR con FALLBACK. Stdlib pura (urllib).
 
-POR QUE EXISTE (2026-06-21): el Agent Team puede correr workers a COSTO $0 usando los tiers GRATUITOS
+POR QUE EXISTE (2026-06-21): el ecosistema puede correr workers/llamadas LLM a COSTO $0 usando los tiers GRATUITOS
 de proveedores que hablan el protocolo OpenAI (`POST /chat/completions`): Groq, Google Gemini y
 OpenRouter. Un solo cliente sirve para los tres porque el protocolo es el mismo; si uno falla o agota
 su cuota del dia, se cae al siguiente automaticamente. Sin dependencias (urllib) -> fiel al ecosistema.
@@ -139,6 +139,7 @@ def _post(base_url: str, api_key: str, payload: dict, timeout: int = 60) -> dict
     req = urllib.request.Request(url, data=data, method="POST")
     req.add_header("Content-Type", "application/json")
     req.add_header("Authorization", f"Bearer {api_key}")
+    req.add_header("User-Agent", "Mozilla/5.0 (cerebro-agent-team)")  # Cloudflare (Groq) bloquea el UA de urllib -> 403 1010
     req.add_header("HTTP-Referer", "https://github.com")        # OpenRouter pide referer/title
     req.add_header("X-Title", "cerebro-agent-team")
     with urllib.request.urlopen(req, timeout=timeout) as resp:
