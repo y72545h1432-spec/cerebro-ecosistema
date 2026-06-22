@@ -1,0 +1,39 @@
+# ===== .cerebro .gitignore — infra del ecosistema; SIN memoria durable ni estado privado =====
+# MEMORIA DURABLE Y HANDOFFS = PERSONAL/SENSIBLE -> NO se sube
+memoria/
+*.bak
+# Estado efímero de coordinación (locks/eventos/buzón) — local, no versionar
+estado/
+state/
+*.lock
+*.pid
+buzon*/
+eventos*/
+# Proyectos PERSONALES (rutas/nombres del autor) -> NO se versiona; el repo trae proyectos.example.toml
+proyectos.local.toml
+# Secretos
+.env
+.env.*
+# plantilla SIN claves: esta SI se versiona (guia para el repo publico). El comentario va en su
+# PROPIA linea: git NO soporta comentarios en linea (romperian el patron de negacion).
+!.env.example
+*.key
+*.pem
+*_token.json
+*client_secret*.json
+secrets/
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+# Cachés / logs
+.cache/
+*.log
+
+# Screenshots de dashboards (pueden mostrar datos de negocio)
+*.png
+*.jpg
+*.jpeg
+*.gif

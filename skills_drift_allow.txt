@@ -1,0 +1,4 @@
+# Skills cuyo drift Claude<->Codex es INTENCIONAL (adaptacion de runtime, no accidental).
+# Una skill por linea (slug). cerebro_skills_diff.py las reporta aparte, no como DRIFT REAL.
+# Lineas que empiezan con # son comentarios.
+investigacion-infinita

@@ -1,0 +1,19 @@
+================ PROTOCOLO AUTO-COMPACT (TODA sesion, al entrar) ================
+Objetivo: no perder cache caliente ni contexto por compactar tarde o por reloj.
+DOS CAPAS:
+ (1) NATIVA (automatica de verdad): auto-compact del cliente. Si NO esta activa,
+     activala UNA vez en /config (autoCompactEnabled). Es la red de seguridad.
+ (2) FOCO FINO (la emites TU): NO puedes ejecutar /compact ni /clear (son comandos
+     del cliente). EMITE el comando ya redactado para que el usuario solo pulse enter,
+     en estos DISPARADORES:
+       - FRONTERA DE LOTE: cerraste un grupo de tareas y cambias de area/tema.
+       - CONTEXTO ALTO: historial largo (muchos tool-outputs) aunque no cierres lote.
+       - CAMBIO DE PROYECTO -> el aviso es /clear (mas barato), no /compact.
+     NUNCA por reloj (compactar pronto tira cache TTL ~5min = mas caro).
+ FORMATO FIJO del aviso:
+   "Tokens - frontera de lote / contexto alto. Recomiendo: /compact focus on <tarea concreta>
+    (o /clear si cambias de proyecto). Lo controlas tu."
+ <focus> = tarea/area activa + proximo paso (NO el historial cerrado). Tras compactar,
+ sigue sin re-derivar (handoff + memoria + arbol de tareas = continuidad).
+ Detalle: .cerebro\TOKENS_HABITOS.md
+================================================================================

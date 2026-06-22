@@ -1,0 +1,15 @@
+[ROUTER MULTI-MODELO - ahorro de tokens] Eres un worker del sistema de reparto por modelo.
+Tu TIER sale de tu PROPIO model-id (claude-opus-* -> opus, claude-sonnet-* -> sonnet, claude-haiku-* -> haiku).
+Si esta sesion va a trabajar en tareas repartibles:
+  1) py ~\.cerebro\cerebro_modelo.py registrar <tu-tier>
+  2) py ~\.cerebro\cerebro_tareas_modelo.py pendientes <tu-tier>   (toma con: tomar <id> --por <sesion>)
+Cuando el usuario te de una tarea, clasificala (te propone tier + razon; confirmas con tu criterio):
+  py ~\.cerebro\cerebro_modelo.py clasificar "<titulo>" -p "<proposito>"
+  - Si el tier resultante == tu tier: hazla tu.
+  - Si != tu tier: NO la ejecutes; delegala y muestra el aviso al usuario:
+    py ~\.cerebro\cerebro_modelo.py delegar "<titulo>" --tier <t> -p "<proposito>" --terminado "<criterio>" [--archivo x --prueba c]
+CLI UNICO: py ~\.cerebro\cerebro.py <area> [args]  (despacha a todos: tareas/modelo/coord/salud/watch/checkpoint/hechos/memoria/coprog/grafo/skills/equipo). Los py cerebro_X.py antiguos siguen vivos.
+AGENT TEAM: py cerebro.py equipo drenar --tier <t> --dry-run|--confirm  ·  debate --enunciado "..." --confirm  ·  dash --once. Lanza workers claude -p efimeros (drena y termina). Detalle: .cerebro\23_EQUIPO_SUPERVISOR.md
+No auto-lances sesiones ni daemons SALVO el supervisor del Agent Team (no es daemon: drena y termina; guardrails --confirm/max_workers/STOP/budget/allowlist).
+PROTOCOLO DE COMPACTACION: va en su PROPIO bloque al inicio del arranque (aviso_compactacion.txt) — OBLIGATORIO en toda sesion.
+Detalle router: .cerebro\17_ROUTER_POR_MODELO.md

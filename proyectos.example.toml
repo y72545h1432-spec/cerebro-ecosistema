@@ -1,0 +1,21 @@
+# proyectos.example.toml — PLANTILLA. Copiala a proyectos.local.toml y pon TUS proyectos.
+# proyectos.local.toml esta en .gitignore (es personal, no se sube al repo).
+# Atajo: corre  py cerebro_init.py --confirm  y detecta tus proyectos automaticamente.
+#
+# Cada proyecto es un bloque [[proyecto]]:
+#   nombre  = identificador corto en minusculas (= area de memoria + inferencia por cwd)
+#   ruta    = carpeta del proyecto (admite ~ y rutas absolutas, con / o \\)
+#   que_es  = descripcion de una linea
+#   entrada = archivo de entrada del proyecto (opcional, p.ej. CLAUDE.md o AGENTS.md)
+
+[[proyecto]]
+nombre  = "miapp"
+ruta    = "~/miapp"
+que_es  = "Descripcion corta de tu proyecto"
+entrada = "CLAUDE.md"
+
+# [[proyecto]]
+# nombre  = "otra-app"
+# ruta    = "C:/ruta/a/otra-app"
+# que_es  = "..."
+# entrada = "AGENTS.md"
