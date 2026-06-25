@@ -93,6 +93,37 @@ def test_recordar_actualiza_no_duplica():
     _ok("recordar: re-grabar el mismo slug ACTUALIZA en sitio (no duplica)")
 
 
+def test_consolidar_detecta_near_dup():
+    _fresh()
+    mem.recordar("router-tareas-por-modelo", "cola por modelo", "publica tareas a un modelo concreto", "reference", "hub", "claude")
+    mem.recordar("reference-tareas-por-modelo", "cola por modelo", "publica tareas a un modelo concreto", "reference", "hub", "claude")
+    mem.recordar("algo-distinto", "otra cosa", "dropshipping cozy tu-nicho", "reference", "hub", "claude")
+    pares = mem.consolidar(umbral=0.80)
+    slugs = {tuple(sorted((a, b))) for _, _, a, b, _, _ in pares}
+    assert ("reference-tareas-por-modelo", "router-tareas-por-modelo") in slugs, pares
+    assert all("algo-distinto" not in (a, b) for _, _, a, b, _, _ in pares), pares
+    _ok("consolidar: detecta el near-duplicado (name-drift) y excluye el hecho distinto")
+
+
+def test_fusionar_conserva_y_borra():
+    _fresh()
+    mem.recordar("keep", "desc", "cuerpo A", "reference", "hub", "claude")
+    mem.recordar("drop", "desc", "cuerpo B unico", "reference", "hub", "claude")
+    assert mem.fusionar("keep", "drop") is True
+    k = mem.leer("keep")
+    assert k and "cuerpo A" in k["cuerpo"] and "cuerpo B unico" in k["cuerpo"]
+    assert mem.leer("drop") is None
+    assert mem.fusionar("keep", "noexiste") is False
+    _ok("fusionar: anexa el cuerpo del drop al keep, borra el drop; par inexistente -> False")
+
+
+def test_sugerir_slug():
+    _fresh()
+    assert mem._sugerir_slug("Feedback usuario 2026: NO poner logo!") == "feedback-usuario-2026-no-poner-logo"
+    assert mem._sugerir_slug("") == "nota"
+    _ok("_sugerir_slug: normaliza a kebab-case y degrada a 'nota' si vacío")
+
+
 def _run():
     fns = [v for k, v in sorted(globals().items()) if k.startswith("test_") and callable(v)]
     ok = 0

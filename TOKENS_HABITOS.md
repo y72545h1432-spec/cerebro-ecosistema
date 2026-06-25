@@ -98,6 +98,8 @@ estado vive en capas DURABLES, no en el historial del chat:
      (el hook `SessionStart` lo auto-carga al abrir): qué estaba en curso, decisiones tomadas, **el
      próximo paso concreto**, y los punteros (no pegar contenido — enlazar).
   2. Promover lo que vale a **memoria durable** (`cerebro_memoria.recordar`) — sobrevive a cualquier sesión.
+     Para no olvidar qué promover, `py .cerebro\cerebro_memoria.py cosechar [proyecto]` lista el stream
+     efímero `conocimiento()` como candidatos durables (con slug sugerido; NO graba — eliges tú).
   3. Dejar lo EN-CURSO en el **árbol de tareas** (tu-proyecto-agente `tareas/`) o en la **cola por modelo**; `latido`/
      `despedir` de la multisesión y `conocimiento()` cierran el estado de coordinación.
 - **Al ABRIR otra sesión:**

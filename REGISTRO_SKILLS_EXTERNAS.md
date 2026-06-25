@@ -20,6 +20,22 @@
   instalado 2026-06-19 en `~\.claude\skills\nothing-design\` (LICENSE conservada; repo-fuente
   movido a `scratch\skills-fuente\` como procedencia). **Dispara solo** con "Nothing style"/"/nothing-design"
   (no automático). Útil para: tu-proyecto-web, landings/PDP de tu-tienda con estética técnica, dashboards.
+- **`escribir-menos-codigo`** (skill de Claude, NATIVA — **destilada, NO instalada**) — escalera YAGNI de 7
+  peldaños + suelo de seguridad no-negociable que sesga al agente a escribir el mínimo código que resuelve.
+  **Origen:** `github.com/DietrichGebert/ponytail` (MIT). Recreada como `SKILL.md` de texto-guía (sin plugin/
+  Node hook → cero RAM/red), verificada contra el README oficial. **Número honesto** (benchmark agéntico del
+  repo, Haiku 4.5, 12 tareas, FastAPI+React): **−54% LOC, −22% tokens, −20% costo, −27% tiempo, 100% seguro**;
+  el "−77%/90%" de los videos es la medición *single-shot* vieja que el propio autor retractó (mismo patrón
+  que CodeGraph "−94%"→~50%). Instalada 2026-06-24 en `…\.claude\skills\escribir-menos-codigo\`; **unifica**
+  con CLAUDE.md "Calidad de Salida §2" (puntero, sin duplicar). Dispara por description al escribir/refactorizar
+  código. → memoria [[reference-ponytail-escribir-menos-codigo]].
+- **Engram** (de `github.com/Gentleman-Programming/gentle-ai`, MIT, Go) — memoria persistente entre 15 agentes.
+  **NO instalado**: se solapa con `cerebro_memoria` (ya durable/compartido/semántico). Se **robaron sus ideas
+  faltantes**, recreadas NATIVAS en `cerebro_memoria.py`: `consolidar` (anti name-drift, *propone* fusiones,
+  no auto), `cosechar` (auto-captura: stream efímero `conocimiento()` → candidatos durables) y la **vista
+  "Memoria"** del `hub_dashboard` (`:<PUERTO_HUB>` — el "TUI" de Engram, sin daemon nuevo). Su `sync`/Cloud multi-máquina
+  queda **DIFERIDO** (memoria privada, reglas #8/#1 → `05_MIGRACION_PRIVADA_PENDIENTE.md`). 2026-06-24.
+  → memoria [[reference-engram-ideas-destiladas]].
 
 ---
 
