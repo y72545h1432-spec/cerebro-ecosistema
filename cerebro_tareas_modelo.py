@@ -140,6 +140,47 @@ def rechazar(tid: str, motivo: str = "", por: str | None = None) -> bool:
     return _cerrar(tid, "rechazada", motivo, por)
 
 
+def reabrir(tid: str, feedback: str = "", por: str | None = None) -> int:
+    """E2 auto-reparación: re-encola una tarea que NO pasó la compuerta para que otro worker la reintente
+    con el error como pista. Acepta desde 'tomada' (api diferido) o 'hecha' (claude ya cerró) → 'pendiente';
+    acumula `feedback_compuerta` (lista) e incrementa `intentos_compuerta`. Devuelve el nº de intentos
+    acumulado, o -1 si la tarea no estaba en un estado reabrible."""
+    with _Mutex("tareas_modelo"):
+        d = _load()
+        t = d.get("tareas", {}).get(tid)
+        if not t or t.get("estado") not in ("tomada", "hecha"):
+            return -1
+        t["estado"] = "pendiente"
+        t["tomada_por"] = ""
+        t["ts_tomada"] = ""
+        t["intentos_compuerta"] = int(t.get("intentos_compuerta", 0)) + 1
+        if feedback:
+            t.setdefault("feedback_compuerta", []).append(feedback)
+        t["bitacora"].append({"ts": _now(),
+                              "texto": f"[reabierta-compuerta #{t['intentos_compuerta']}] {feedback[:120]}"})
+        _save(d)
+        return t["intentos_compuerta"]
+
+
+def revertir(tid: str, motivo: str = "", por: str | None = None) -> bool:
+    """Deshace un cierre 'hecha' que NO debió serlo (la compuerta de ejecución posterior lo refutó).
+    Único caso permitido: hecha -> fallida (el store deja de mentir; A5). Devuelve False si la tarea no
+    está 'hecha'. A diferencia de `fallar`, SÍ transiciona desde un estado terminal — pero solo 'hecha'."""
+    with _Mutex("tareas_modelo"):
+        d = _load()
+        t = d.get("tareas", {}).get(tid)
+        if not t or t.get("estado") != "hecha":
+            return False
+        t["estado"] = "fallida"
+        t["nota"] = motivo or t.get("nota", "")
+        t["ts_hecha"] = _now()
+        if por:
+            t["tomada_por"] = t["tomada_por"] or por
+        t["bitacora"].append({"ts": _now(), "texto": f"[revertida->fallida] compuerta: {motivo}"})
+        _save(d)
+        return True
+
+
 def expirar_tomadas(ttl_min: int = 30, ahora: datetime | None = None) -> list:
     """Visibility timeout: una tarea 'tomada' cuyo worker murio/desaparecio queda colgada para siempre.
     Reclama las 'tomada' cuyo `ts_tomada` es mas viejo que `ttl_min` -> vuelven a 'pendiente'
@@ -250,7 +291,7 @@ def _cli(argv: list[str]) -> int:
     pp.add_argument("--prueba", dest="pruebas", action="append", default=[])
     pp.add_argument("--prioridad", type=int, default=0)
     pp.add_argument("--por", default="?")
-    for name in ("tomar", "completar", "cancelar", "fallar", "rechazar"):
+    for name in ("tomar", "completar", "cancelar", "fallar", "rechazar", "revertir", "reabrir"):
         q = sub.add_parser(name)
         q.add_argument("tid")
         q.add_argument("--por", default=None)
@@ -275,6 +316,13 @@ def _cli(argv: list[str]) -> int:
         return 0
     if a.cmd == "rechazar":
         print("OK" if rechazar(a.tid, a.motivo, a.por) else "NO")
+        return 0
+    if a.cmd == "revertir":
+        print("OK" if revertir(a.tid, a.motivo, a.por) else "NO (no estaba 'hecha')")
+        return 0
+    if a.cmd == "reabrir":
+        n = reabrir(a.tid, a.motivo, a.por)
+        print(f"reabierta (intento #{n})" if n > 0 else "NO (no estaba 'tomada'/'hecha')")
         return 0
     print(f"comando desconocido: {cmd}"); return 2
 
